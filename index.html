@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheriff Tornillo · Carrera en el Desierto | Juego oficial</title>
+<meta name="description" content="Sheriff Tornillo: endless runner 3D western hecho en Unity 6. Persigue a los Hermanos Óxido, recupera el oro y llega a 1000 puntos. Juega gratis en tu navegador.">
+<meta name="author" content="Juan Miguel Huanca Uruña · Axel Marcelo Canqui Ticona">
+<meta name="theme-color" content="#1b0e1c">
+<!-- Open Graph: así se ve el enlace al compartirlo en WhatsApp, Teams o Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sheriff Tornillo · Carrera en el Desierto">
+<meta property="og:description" content="Endless runner 3D western hecho en Unity 6. ¡Juega gratis en el navegador!">
+<meta property="og:image" content="img/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤠</text></svg>">
+
+<!-- Fuentes del juego -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+<!-- Bootstrap 5.3 + Bootstrap Icons + AOS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+<!-- Estilos propios -->
+<link rel="stylesheet" href="css/estilos.css">
+
+<!-- Datos estructurados para buscadores -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"VideoGame","name":"Sheriff Tornillo: Carrera en el Desierto","genre":["Endless runner","Western"],"gamePlatform":"Web browser (WebGL)","applicationCategory":"Game","operatingSystem":"Any","author":[{"@type":"Person","name":"Juan Miguel Huanca Uruña"},{"@type":"Person","name":"Axel Marcelo Canqui Ticona"}],"url":"https://play.unity.com/en/games/3797a0b4-e17b-46d5-ab0b-ebe0cbc3c7af/sheriff-tornillo","image":"img/captura.jpg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+</head>
+
+<body>
+
+<!-- Precarga -->
+<div id="precarga" aria-hidden="true">
+  <div>
+    <svg class="tuerca mx-auto d-block" viewBox="0 0 100 100"><path d="M50 4l10 8 13-2 5 12 12 5-2 13 8 10-8 10 2 13-12 5-5 12-13-2-10 8-10-8-13 2-5-12-12-5 2-13-8-10 8-10-2-13 12-5 5-12 13 2z" fill="#f9c33b" stroke="#8e1a4a" stroke-width="4"/><circle cx="50" cy="50" r="16" fill="#1b0e1c" stroke="#8e1a4a" stroke-width="4"/></svg>
+    <p>Ajustando tornillos…</p>
+  </div>
+</div>
+<div id="progreso"></div>
+
+<!-- Símbolos SVG -->
+<svg width="0" height="0" class="position-absolute" aria-hidden="true">
+  <defs>
+    <symbol id="estrella" viewBox="0 0 24 24"><path d="M12 1.8l3 6.4 7 .9-5.1 4.8 1.3 6.9L12 17.5l-6.2 3.3 1.3-6.9L2 9.1l7-.9z" fill="#f9c33b" stroke="#a87a14" stroke-width="1.2" stroke-linejoin="round"/></symbol>
+    <symbol id="oxido" viewBox="0 0 100 100">
+      <path d="M14 34c10 8 62 8 72 0-6-2-12-3-16-4l-3-18c-2-6-8-7-12-4-3 2-7 2-10 0-4-3-10-2-12 4l-3 18c-4 1-10 2-16 4z" fill="#3b2a22" stroke="#1d130e" stroke-width="2"/>
+      <rect x="24" y="36" width="52" height="46" rx="10" fill="#a0572d" stroke="#5b2c12" stroke-width="2.5"/>
+      <circle cx="34" cy="48" r="3" fill="#6d3415"/><circle cx="66" cy="72" r="4" fill="#6d3415"/><circle cx="60" cy="44" r="2" fill="#6d3415"/>
+      <rect x="30" y="50" width="40" height="12" rx="6" fill="#1b0e1c"/>
+      <circle cx="40" cy="56" r="3.5" fill="#ff5a3c"/><circle cx="60" cy="56" r="3.5" fill="#ff5a3c"/>
+      <path d="M24 64h52v18H24z" fill="#2b2b3a"/>
+    </symbol>
+    <symbol id="moneda" viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" fill="#f9c33b" stroke="#a87a14" stroke-width="2"/><circle cx="15" cy="15" r="9" fill="none" stroke="#ffe7a0" stroke-width="1.4"/><path d="M10.5 9v7a4.5 4.5 0 0 0 9 0V9" fill="none" stroke="#8a5f0c" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="cactus" viewBox="0 0 80 100"><path d="M30 98V18a10 10 0 0 1 20 0v80z" fill="#4c8a52" stroke="#244a29" stroke-width="3"/><path d="M30 58H16a8 8 0 0 1-8-8V34a7 7 0 0 1 14 0v12h8M50 48h12V28a7 7 0 0 1 14 0v24a8 8 0 0 1-8 8H50" fill="#4c8a52" stroke="#244a29" stroke-width="3"/><path d="M40 26v6M36 50v6M44 70v6" stroke="#2c5a31" stroke-width="2"/></symbol>
+    <symbol id="tnt" viewBox="0 0 80 100"><path d="M40 4c-6 0-6 10 0 12" stroke="#5b3a22" stroke-width="3" fill="none"/><circle cx="41" cy="5" r="4" fill="#ffb347"/><rect x="8" y="18" width="64" height="80" rx="10" fill="#b03a2e" stroke="#4a1019" stroke-width="3"/><rect x="8" y="30" width="64" height="6" fill="#7c2018"/><rect x="8" y="80" width="64" height="6" fill="#7c2018"/><text x="40" y="66" text-anchor="middle" font-family="Rye,serif" font-size="22" fill="#ffe08a">TNT</text></symbol>
+    <symbol id="cartelSB" viewBox="0 0 90 100"><rect x="14" y="40" width="6" height="58" fill="#6b4226"/><rect x="70" y="40" width="6" height="58" fill="#6b4226"/><rect x="4" y="6" width="82" height="58" rx="4" fill="#f7ead0" stroke="#8b5a2b" stroke-width="3"/><text x="45" y="26" text-anchor="middle" font-family="Rye,serif" font-size="13" fill="#8e1a4a">SE BUSCA</text><rect x="30" y="32" width="30" height="24" rx="4" fill="#a0572d"/><rect x="34" y="38" width="22" height="7" rx="3" fill="#1b0e1c"/></symbol>
+    <symbol id="buitre" viewBox="0 0 100 70"><path d="M50 34C38 14 18 10 2 16c16 4 28 14 38 24z" fill="#3a2a36" stroke="#1b0e1c" stroke-width="2.5"/><path d="M50 34C62 14 82 10 98 16c-16 4-28 14-38 24z" fill="#3a2a36" stroke="#1b0e1c" stroke-width="2.5"/><ellipse cx="50" cy="42" rx="16" ry="12" fill="#4b3646" stroke="#1b0e1c" stroke-width="2.5"/><circle cx="50" cy="28" r="7" fill="#d98a8a"/><path d="M50 30l4 8-6-3z" fill="#f9c33b"/><circle cx="48" cy="27" r="1.6" fill="#1b0e1c"/><path d="M38 34c8 4 16 4 24 0" stroke="#f3e6d8" stroke-width="4" fill="none"/></symbol>
+  </defs>
+</svg>
+
+<!-- ================= 1. NAVEGACIÓN ================= -->
+<nav class="navbar navbar-expand-lg fixed-top" id="nav" aria-label="Navegación principal">
+  <div class="container">
+    <a class="navbar-brand text-decoration-none" href="#inicio">
+      <svg class="logo" viewBox="0 0 24 24"><use href="#estrella"/></svg>
+      <span><span class="t1">Sheriff Tornillo</span><span class="t2">CARRERA EN EL DESIERTO</span></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMovil" aria-controls="menuMovil" aria-label="Abrir menú"><i class="bi bi-list"></i></button>
+    <div class="collapse navbar-collapse" id="menuPrincipal">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="#historia">Historia</a></li>
+        <li class="nav-item"><a class="nav-link" href="#personaje">Personaje</a></li>
+        <li class="nav-item"><a class="nav-link" href="#mecanicas">Mecánicas</a></li>
+        <li class="nav-item"><a class="nav-link" href="#datos">Datos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+        <li class="nav-item ms-lg-2"><a class="btn btn-st btn-st-jugar btn-st-sm" href="#jugar"><i class="bi bi-play-fill"></i> Jugar ahora</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="menuMovil" aria-labelledby="menuMovilTitulo">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title font-rye text-oro" id="menuMovilTitulo">Sheriff Tornillo</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <nav class="nav flex-column gap-1">
+      <a class="nav-link" href="#historia" data-bs-dismiss="offcanvas"><i class="bi bi-book me-2"></i>Historia</a>
+      <a class="nav-link" href="#personaje" data-bs-dismiss="offcanvas"><i class="bi bi-person-badge me-2"></i>Personaje</a>
+      <a class="nav-link" href="#mecanicas" data-bs-dismiss="offcanvas"><i class="bi bi-controller me-2"></i>Mecánicas</a>
+      <a class="nav-link" href="#datos" data-bs-dismiss="offcanvas"><i class="bi bi-bar-chart me-2"></i>Datos</a>
+      <a class="nav-link" href="#faq" data-bs-dismiss="offcanvas"><i class="bi bi-question-circle me-2"></i>Preguntas frecuentes</a>
+    </nav>
+    <a class="btn btn-st btn-st-jugar mt-4" href="#jugar" data-bs-dismiss="offcanvas"><i class="bi bi-play-fill"></i> JUGAR AHORA</a>
+    <p class="text-suave small mt-auto mb-0">Game Development · Univalle 2026</p>
+  </div>
+</div>
+
+<main>
+<!-- ================= 2. SECCIÓN PRINCIPAL ================= -->
+<header class="hero" id="inicio">
+  <div class="sol" id="sol"></div>
+  <canvas id="polvo" aria-hidden="true"></canvas>
+  <svg class="mesas" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 300V200l90-10 20-60h120l20 60 140 10 60-20 50 30h200l30-90h160l30 90 140-10 40-40 80 10 40 30 110 10 70-40h40v150z" fill="#8a3a3a" opacity=".5"/>
+    <path d="M0 300v-60l160-8 30-50h90l30 50 220 10 120-30 80 30 200-12 40-60h110l40 60 180 6 140-10v74z" fill="#6b2a35" opacity=".75"/>
+    <path d="M0 300v-30c240-20 480 8 720-4s480-14 720 2v32z" fill="#e8b27a"/>
+  </svg>
+
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div data-aos="fade-up"><span class="insignia"><span class="punto"></span>ENDLESS RUNNER 3D · WESTERN</span></div>
+        <h1 class="hero-titulo" data-aos="fade-up" data-aos-delay="100">Sheriff<br>Tornillo</h1>
+        <div class="hero-sub" data-aos="fade-up" data-aos-delay="150">Carrera en el Desierto</div>
+        <p class="hero-frase" data-aos="fade-up" data-aos-delay="200"><span id="maquina">El oro no se recupera solo, compañero.</span><span class="cursor"></span></p>
+        <p class="hero-desc" data-aos="fade-up" data-aos-delay="250">Los <b>Hermanos Óxido</b> asaltaron el pueblo y huyen con todo el oro. Corre sin parar por el desierto, salta cactus y barriles de TNT, deslízate bajo carteles y buitres, y llega a <b>1000 puntos</b> antes de que se te acaben los sombreros.</p>
+        <div class="d-flex flex-wrap gap-3 my-4" data-aos="fade-up" data-aos-delay="300">
+          <a href="#jugar" class="btn btn-st btn-st-jugar"><i class="bi bi-play-fill me-1"></i>JUGAR AHORA</a>
+          <a href="#historia" class="btn btn-st btn-st-pizarra"><i class="bi bi-book me-1"></i>Conoce la historia</a>
+        </div>
+        <div class="row g-2 g-sm-3" style="max-width:560px" data-aos="fade-up" data-aos-delay="350">
+          <div class="col-4"><div class="metrica"><i class="bi bi-trophy-fill"></i><b data-cuenta="1000">1000</b><small>puntos para ganar</small></div></div>
+          <div class="col-4"><div class="metrica"><i class="bi bi-heart-fill" style="color:var(--st-rosa)"></i><b data-cuenta="3">3</b><small>vidas (sombreros)</small></div></div>
+          <div class="col-4"><div class="metrica"><div class="d-flex justify-content-center gap-1 mb-1"><span class="tecla">↑</span><span class="tecla">↓</span></div><b style="font-size:.95rem">Saltar · Deslizar</b><small>controles</small></div></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="200">
+        <div class="monitor" data-tilt data-tilt-max="6" data-tilt-glare data-tilt-max-glare=".15" data-tilt-scale="1.02">
+          <div class="barra-ventana"><span></span><span></span><span></span><em>play.unity.com · sheriff-tornillo</em></div>
+          <img src="img/captura.jpg" alt="Captura del menú principal de Sheriff Tornillo con el robot corriendo por el desierto" width="1919" height="1079" data-bs-toggle="modal" data-bs-target="#modalCaptura">
+          <span class="zoom"><i class="bi bi-arrows-fullscreen me-1"></i>Ampliar</span>
+          <div class="sello">Hecho en Unity 6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="#historia" class="scroll-ind" aria-label="Bajar"><i class="bi bi-chevron-double-down"></i></a>
+</header>
+
+<!-- Cinta -->
+<div class="cinta" aria-hidden="true">
+  <div class="cinta-pista">
+    <span>Salta los cactus</span><span>Deslízate bajo los buitres</span><span>Recupera el oro</span><span>3 sombreros</span><span>1000 puntos</span><span>Hasta el atardecer</span>
+    <span>Salta los cactus</span><span>Deslízate bajo los buitres</span><span>Recupera el oro</span><span>3 sombreros</span><span>1000 puntos</span><span>Hasta el atardecer</span>
+  </div>
+</div>
+
+<!-- ================= 3. HISTORIA ================= -->
+<section class="seccion papel" id="historia">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-book"></i>CAPÍTULO I · HISTORIA</span>
+      <h2>La gran fuga del oro</h2>
+      <p>Una persecución a toda máquina por el desierto, desde la tarde hasta la puesta del sol.</p>
+    </div>
+
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-6">
+        <div class="linea-tiempo">
+          <article class="hito" data-aos="fade-right">
+            <span class="marca-hito"><i class="bi bi-geo-alt-fill"></i></span>
+            <span class="etapa">EL MUNDO</span>
+            <h3>Un desierto de tuercas y polvo</h3>
+            <p>En un rincón olvidado del Lejano Oeste, los pueblos ya no los cuidan vaqueros de carne y hueso, sino robots de metal. Entre mesas rojizas, cactus y buitres que vuelan en círculo, el oro es lo que mantiene viva a la comunidad.</p>
+            <p>Todo el juego es una sola carrera interminable por ese desierto, bajo un cielo que pasa de la tarde dorada al atardecer encendido.</p>
+          </article>
+          <article class="hito" data-aos="fade-right" data-aos-delay="100">
+            <span class="marca-hito"><i class="bi bi-exclamation-triangle-fill"></i></span>
+            <span class="etapa">EL CONFLICTO</span>
+            <h3>El asalto de los Hermanos Óxido</h3>
+            <p>La temida banda de los <b>Hermanos Óxido</b>, robots forajidos corroídos por los años y la codicia, asalta el pueblo y escapa con todo el oro. A su paso dejan una trampa tras otra: barriles de TNT, cactus en pleno camino y carteles de <em>SE BUSCA</em> a la altura de la cabeza.</p>
+          </article>
+          <article class="hito" data-aos="fade-right" data-aos-delay="200">
+            <span class="marca-hito"><i class="bi bi-flag-fill"></i></span>
+            <span class="etapa">LA MISIÓN</span>
+            <h3>Correr hasta el atardecer</h3>
+            <p>El <b>Sheriff Tornillo</b> no tiene caballo, pero tiene piernas de acero que nunca se cansan. Su misión es <b>recuperar el oro moneda por moneda</b> y llegar a <b>1000 puntos</b> antes de quedarse sin sombreros. Cuanto más se acerca a la meta, más rápido corre y más se tiñe de rojo el cielo.</p>
+            <p class="mb-0">Al cruzar la meta, el pueblo lo celebra con confeti y fanfarria… pero un buen sheriff siempre puede seguir corriendo por el récord.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <p class="text-center small fw-bold mb-3" style="color:#8b5a2b"><i class="bi bi-hand-index"></i> Pasa el cursor o toca un cartel para darle la vuelta</p>
+        <div class="row g-4">
+          <div class="col-6" data-aos="flip-left"><div class="cartel rot-1" tabindex="0"><div class="cartel-in">
+            <div class="cartel-cara"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100"><use href="#oxido"/></svg></div><div class="nom">Óxido Mayor</div><div class="rec">Recompensa: 500 🪙</div></div>
+            <div class="cartel-cara atras"><h4>El cabecilla</h4><p>Planeó el asalto y lleva la bolsa más pesada. Va siempre al frente de la banda.</p></div>
+          </div></div></div>
+          <div class="col-6 mt-5" data-aos="flip-left" data-aos-delay="100"><div class="cartel rot-2" tabindex="0"><div class="cartel-in">
+            <div class="cartel-cara"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100" style="transform:scaleX(-1)"><use href="#oxido"/></svg></div><div class="nom">Óxido Menor</div><div class="rec">Recompensa: 300 🪙</div></div>
+            <div class="cartel-cara atras"><h4>El de las trampas</h4><p>Va soltando barriles de TNT por el camino para frenar al sheriff.</p></div>
+          </div></div></div>
+          <div class="col-6 mt-n4" data-aos="flip-left" data-aos-delay="200"><div class="cartel rot-3" tabindex="0"><div class="cartel-in">
+            <div class="cartel-cara"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100" style="filter:hue-rotate(25deg) saturate(.8)"><use href="#oxido"/></svg></div><div class="nom">Óxido el Flaco</div><div class="rec">Recompensa: 200 🪙</div></div>
+            <div class="cartel-cara atras"><h4>El vigía</h4><p>Clava carteles de SE BUSCA a la altura de la cabeza. ¡Deslízate!</p></div>
+          </div></div></div>
+          <div class="col-6" data-aos="flip-left" data-aos-delay="300"><div class="cartel" tabindex="0"><div class="cartel-in">
+            <div class="cartel-cara" style="background:var(--st-guindo);border-color:#4a0d26"><div class="se" style="color:var(--st-oro)">EL BOTÍN</div><div class="cara"><svg viewBox="0 0 30 30" style="height:80px"><use href="#moneda"/></svg></div><div class="nom" style="color:var(--st-oro)">El oro del pueblo</div><div class="rec" style="color:var(--st-arena)">¡Recupéralo todo!</div></div>
+            <div class="cartel-cara atras" style="background:var(--st-oro);color:var(--st-tinta)"><h4 style="color:var(--st-guindo)">+50 por moneda</h4><p>Cada moneda lleva grabada la “U” de Univalle.</p></div>
+          </div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="borde-roto abajo" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
+</section>
+
+<!-- ================= 4. PERSONAJE ================= -->
+<section class="seccion personaje" id="personaje">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-person-badge"></i>CAPÍTULO II · PERSONAJE</span>
+      <h2>El Sheriff Tornillo</h2>
+      <p>El último robot vaquero que todavía cree en la ley del Oeste.</p>
+    </div>
+
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5" data-aos="fade-right">
+        <div class="foto-pj">
+          <div class="marco">
+            <img src="img/personaje.jpg" alt="Modelo 3D del Sheriff Tornillo: robot cilíndrico con sombrero y poncho guindo" width="600" height="660" loading="lazy">
+            <div class="nombre">Sheriff Tornillo</div>
+          </div>
+          <div class="chip c1">🤠 Sombrero <b>guindo</b></div>
+          <div class="chip c2">🧣 Poncho con <b>franjas</b></div>
+          <div class="chip c3">⚙️ Cuerpo de <b>acero</b></div>
+        </div>
+      </div>
+
+      <div class="col-lg-7" data-aos="fade-left">
+        <span class="badge-st mb-2 d-inline-block">PROTAGONISTA · ROBOT VAQUERO</span>
+        <h3 class="font-rye text-oro display-6 mb-3">La ley tiene piernas de acero</h3>
+        <p class="text-suave fs-5">Un robot de cuerpo cilíndrico, con brazos y piernas articulados, que lleva con orgullo un <b class="text-white">sombrero guindo</b> y un <b class="text-white">poncho con franjas blancas</b>. Es la ley del pueblo y lo único que se interpone entre los Hermanos Óxido y el oro de sus vecinos. No dispara: <b class="text-white">corre, salta y se desliza</b>, y no se rinde mientras le quede un sombrero.</p>
+
+        <ul class="nav nav-pills nav-pills-st mt-4 mb-4" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tabHab" type="button" role="tab"><i class="bi bi-lightning-charge-fill me-1"></i>Habilidades</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabRasgos" type="button" role="tab"><i class="bi bi-palette-fill me-1"></i>Rasgos</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabFicha" type="button" role="tab"><i class="bi bi-card-list me-1"></i>Ficha</button></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="tabHab" role="tabpanel">
+            <div class="habilidad"><div class="d-flex justify-content-between"><b>🦘 Salto de resorte</b><small>Cactus, TNT y monedas en arco</small></div><div class="progress mt-2"><div class="progress-bar" data-valor="85"></div></div></div>
+            <div class="habilidad"><div class="d-flex justify-content-between"><b>🛷 Deslizamiento</b><small>En el aire: caída rápida</small></div><div class="progress mt-2"><div class="progress-bar" data-valor="78"></div></div></div>
+            <div class="habilidad"><div class="d-flex justify-content-between"><b>🛡️ Blindaje temporal</b><small>1,5 s de invencibilidad</small></div><div class="progress mt-2"><div class="progress-bar" data-valor="60"></div></div></div>
+            <div class="habilidad mb-0"><div class="d-flex justify-content-between"><b>💨 Velocidad</b><small>De 10 a 24 m/s</small></div><div class="progress mt-2"><div class="progress-bar" data-valor="100"></div></div></div>
+          </div>
+          <div class="tab-pane fade" id="tabRasgos" role="tabpanel">
+            <div class="row g-3">
+              <div class="col-sm-6"><div class="rasgo"><i class="bi bi-cpu"></i><h5>Cuerpo cilíndrico</h5><p>Chasis de acero azulado con brazos y piernas articulados.</p></div></div>
+              <div class="col-sm-6"><div class="rasgo"><i class="bi bi-brush"></i><h5>Pintura personalizable</h5><p>Cambia de color en plena carrera con la tecla <b>C</b>.</p></div></div>
+              <div class="col-sm-6"><div class="rasgo"><i class="bi bi-emoji-laughing"></i><h5>Celebra a lo grande</h5><p>Al llegar a la meta brinca de alegría entre confeti.</p></div></div>
+              <div class="col-sm-6"><div class="rasgo"><i class="bi bi-wind"></i><h5>Sombrero volador</h5><p>Al perder la última vida, el sombrero sale volando.</p></div></div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="tabFicha" role="tabpanel">
+            <table class="table tabla-st">
+              <tbody>
+                <tr><th>Nombre</th><td>Sheriff Tornillo</td></tr>
+                <tr><th>Rol</th><td>Sheriff y perseguidor</td></tr>
+                <tr><th>Enemigos</th><td>Los Hermanos Óxido</td></tr>
+                <tr><th>Vidas</th><td>3 sombreros</td></tr>
+                <tr><th>Velocidad</th><td>10 → 24 m/s (36 → 86 km/h)</td></tr>
+                <tr><th>Cámaras</th><td>Lateral o desde atrás (tecla V)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5. MECÁNICAS ================= -->
+<section class="seccion papel" id="mecanicas">
+  <svg class="borde-roto arriba" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-controller"></i>CAPÍTULO III · MECÁNICAS</span>
+      <h2>Cómo se juega</h2>
+      <p>Fácil de aprender, difícil de dominar. Pulsa las teclas en tu teclado y mira cómo se iluminan.</p>
+    </div>
+
+    <ul class="nav nav-pills nav-pills-st justify-content-center mb-4" role="tablist" data-aos="fade-up">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tabControles" type="button" role="tab"><i class="bi bi-keyboard me-1"></i>Controles</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabReglas" type="button" role="tab"><i class="bi bi-journal-text me-1"></i>Reglas</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabObstaculos" type="button" role="tab"><i class="bi bi-cone-striped me-1"></i>Obstáculos</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabFin" type="button" role="tab"><i class="bi bi-flag me-1"></i>Victoria y derrota</button></li>
+    </ul>
+
+    <div class="tab-content" data-aos="fade-up">
+      <!-- Controles -->
+      <div class="tab-pane fade show active" id="tabControles" role="tabpanel">
+        <div class="tarjeta">
+          <div class="teclado-wrap mx-auto" style="max-width:640px">
+            <div class="teclado" id="teclado">
+              <div class="fila"><span class="tecla usada" data-k="Escape" title="Pausa">Esc</span><span class="tecla">Q</span><span class="tecla usada" data-k="w" title="Saltar">W</span><span class="tecla">E</span><span class="tecla usada" data-k="r" title="Reiniciar">R</span><span class="tecla">T</span><span class="tecla">Y</span><span class="tecla">U</span><span class="tecla">I</span><span class="tecla">O</span><span class="tecla usada" data-k="p" title="Pausa">P</span></div>
+              <div class="fila"><span class="tecla">A</span><span class="tecla usada" data-k="s" title="Deslizarse">S</span><span class="tecla">D</span><span class="tecla">F</span><span class="tecla">G</span><span class="tecla">H</span><span class="tecla">J</span><span class="tecla">K</span><span class="tecla">L</span><span class="tecla usada ancha" data-k="Enter" title="Jugar / seguir tras la meta">Enter</span></div>
+              <div class="fila"><span class="tecla ancha">Shift</span><span class="tecla">Z</span><span class="tecla usada" data-k="x" title="Color de obstáculos">X</span><span class="tecla usada" data-k="c" title="Color del robot">C</span><span class="tecla usada" data-k="v" title="Cambiar cámara">V</span><span class="tecla">B</span><span class="tecla">N</span><span class="tecla">M</span><span class="tecla usada" data-k="ArrowUp" title="Saltar">↑</span></div>
+              <div class="fila"><span class="tecla usada espacio" data-k=" " title="Saltar">Espacio</span><span class="tecla">←</span><span class="tecla usada" data-k="ArrowDown" title="Deslizarse">↓</span><span class="tecla">→</span></div>
+            </div>
+          </div>
+          <div class="leyenda-teclas">
+            <div><span class="tecla">↑</span><span class="tecla">W</span><span class="tecla">␣</span> <span><b>Saltar</b></span></div>
+            <div><span class="tecla">↓</span><span class="tecla">S</span> <span><b>Deslizarse</b> · en el aire, cae rápido</span></div>
+            <div><span class="tecla">Esc</span><span class="tecla">P</span> <span><b>Pausa</b> con menú</span></div>
+            <div><span class="tecla">R</span> <span><b>Reiniciar</b> la carrera</span></div>
+            <div><span class="tecla">Enter</span> <span><b>Jugar</b> / seguir tras la meta</span></div>
+            <div><span class="tecla">C</span><span class="tecla">X</span> <span>Color de <b>robot</b> / <b>obstáculos</b></span></div>
+            <div><span class="tecla">V</span> <span><b>Cámara</b> lateral o trasera</span></div>
+            <div><span class="tecla"><i class="bi bi-mouse"></i></span> <span><b>Ratón</b> en todos los menús</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reglas -->
+      <div class="tab-pane fade" id="tabReglas" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-lg-6"><div class="tarjeta">
+            <h3><i class="bi bi-coin me-2"></i>Puntuación</h3>
+            <div class="regla"><div class="ic"><i class="bi bi-stopwatch"></i></div><div><h4>Sobrevive</h4><p><b>+10 puntos por segundo</b> que sigues corriendo.</p></div></div>
+            <div class="regla"><div class="ic"><svg viewBox="0 0 30 30" width="28"><use href="#moneda"/></svg></div><div><h4>Monedas de oro · +50</h4><p>En arco sobre los obstáculos bajos (hay que saltar), al ras del suelo bajo los altos (hay que deslizarse) y en filas. Si las encadenas, cada una suena más aguda.</p></div></div>
+            <div class="regla"><div class="ic"><i class="bi bi-stars"></i></div><div><h4>Estrellas</h4><p>★ con 300 pts · ★★ con 600 · ★★★ con 1000. El récord y las mejores estrellas se guardan.</p></div></div>
+          </div></div>
+          <div class="col-lg-6"><div class="tarjeta">
+            <h3><i class="bi bi-heart-pulse me-2"></i>Vidas y dificultad</h3>
+            <div class="regla"><div class="ic"><i class="bi bi-heart-fill"></i></div><div><h4>3 sombreros</h4><p>Cada choque quita una vida y provoca sacudida, chispas, un destello rojo y <b>1,5 s de invencibilidad</b>.</p></div></div>
+            <div class="regla"><div class="ic"><i class="bi bi-speedometer2"></i></div><div><h4>Cada vez más rápido</h4><p>La velocidad sube de <b>10 a 24 m/s</b> a lo largo de la carrera.</p></div></div>
+            <div class="regla"><div class="ic"><i class="bi bi-sunset-fill"></i></div><div><h4>El cielo marca el avance</h4><p>Pasa de la tarde al atardecer a medida que te acercas a la meta.</p></div></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- Obstáculos -->
+      <div class="tab-pane fade" id="tabObstaculos" role="tabpanel">
+        <div class="row g-4 row-cols-2 row-cols-lg-4">
+          <div class="col"><div class="obs-card"><svg viewBox="0 0 80 100"><use href="#cactus"/></svg><h4>Cactus</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-up"></i> SALTA</span><p>Obstáculo bajo, aparece con frecuencia.</p></div></div>
+          <div class="col"><div class="obs-card"><svg viewBox="0 0 80 100"><use href="#tnt"/></svg><h4>Barril de TNT</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-up"></i> SALTA</span><p>Obstáculo bajo, regalo de los Óxido.</p></div></div>
+          <div class="col"><div class="obs-card"><svg viewBox="0 0 90 100"><use href="#cartelSB"/></svg><h4>Cartel SE BUSCA</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-down"></i> DESLÍZATE</span><p>Obstáculo alto, a la altura de la cabeza.</p></div></div>
+          <div class="col"><div class="obs-card"><svg viewBox="0 0 100 70"><use href="#buitre"/></svg><h4>Buitre</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-down"></i> DESLÍZATE</span><p>Obstáculo alto que además vuela hacia ti.</p></div></div>
+        </div>
+      </div>
+
+      <!-- Victoria y derrota -->
+      <div class="tab-pane fade" id="tabFin" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-md-6"><div class="estado-fin gana"><h4><i class="bi bi-trophy-fill text-warning me-2"></i>Victoria</h4><p>Llega a <b>1000 puntos</b>: confeti, fanfarria y un robot que brinca de alegría. Pulsa <b>Enter</b> para seguir corriendo por el récord.</p></div></div>
+          <div class="col-md-6"><div class="estado-fin pierde"><h4><i class="bi bi-heartbreak-fill text-danger me-2"></i>Derrota</h4><p>Pierdes los 3 sombreros: animación de caída, el sombrero sale volando y aparecen tus estadísticas (puntos, monedas, tiempo, distancia, esquivados y récord). Pulsa <b>Reintentar</b>.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini demo -->
+    <div class="demo mt-5" id="demo" data-aos="fade-up">
+      <div class="demo-cab d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h3><i class="bi bi-joystick me-2"></i>Calienta motores</h3>
+        <p>Mini demo web · <b class="text-white">↑ / Espacio</b> saltar · <b class="text-white">↓</b> deslizarse · en el celular toca arriba o abajo</p>
+      </div>
+      <div class="lienzo-wrap"><canvas id="mini" aria-label="Mini demo jugable del Sheriff Tornillo"></canvas></div>
+      <div class="demo-pie">
+        <button class="btn btn-st btn-st-pizarra btn-st-sm" id="bSalta"><i class="bi bi-arrow-up"></i> Saltar</button>
+        <span class="demo-record">Récord: <b id="record">0</b> pts</span>
+        <button class="btn btn-st btn-st-pizarra btn-st-sm" id="bDesliza"><i class="bi bi-arrow-down"></i> Deslizar</button>
+      </div>
+    </div>
+  </div>
+  <svg class="borde-roto abajo" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
+</section>
+
+<!-- ================= 6. DATOS ================= -->
+<section class="seccion datos" id="datos">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-bar-chart-fill"></i>CAPÍTULO IV · DATOS</span>
+      <h2>El proyecto en números</h2>
+      <p>Las cifras que hay detrás de cada carrera.</p>
+    </div>
+
+    <div class="row g-3 g-lg-4">
+      <div class="col-6 col-lg-3" data-aos="fade-up"><div class="kpi"><i class="bi bi-bullseye"></i><div class="num" data-cuenta="1000">0</div><h4>Puntuación objetivo</h4><p>Meta para ganar la partida.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="100"><div class="kpi"><i class="bi bi-heart-fill"></i><div class="num" data-cuenta="3">0</div><h4>Vidas iniciales</h4><p>Con 1,5 s de invencibilidad tras cada golpe.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="200"><div class="kpi"><i class="bi bi-speedometer"></i><div class="num"><span data-cuenta="24">0</span><small>m/s</small></div><h4>Velocidad máxima</h4><p>Empieza en 10 m/s.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="300"><div class="kpi"><i class="bi bi-sliders"></i><div class="num">~<span data-cuenta="240">0</span></div><h4>Parámetros editables</h4><p>Ajustables desde el Inspector de Unity.</p></div></div>
+    </div>
+
+    <div class="row g-3 g-lg-4 mt-1">
+      <div class="col-lg-7" data-aos="fade-up">
+        <div class="panel">
+          <h3><i class="bi bi-stars me-2"></i>Puntos necesarios por estrella</h3>
+          <p class="sub">Umbrales de estrellas y valor de cada acción.</p>
+          <div class="grafica"><canvas id="grafEstrellas" aria-label="Gráfica de puntos por estrella"></canvas></div>
+        </div>
+      </div>
+      <div class="col-lg-5" data-aos="fade-up" data-aos-delay="100">
+        <div class="panel">
+          <h3><i class="bi bi-speedometer2 me-2"></i>Velocímetro</h3>
+          <p class="sub">Rango de velocidad del sheriff durante la carrera.</p>
+          <div class="velocimetro">
+            <canvas id="grafVelocidad" width="260" height="160" aria-label="Velocímetro de 10 a 24 metros por segundo"></canvas>
+            <div class="lectura"><b id="lecturaVel">10</b><small>m/s · <span id="lecturaKmh">36</span> km/h</small></div>
+          </div>
+          <input type="range" class="form-range mt-3" id="sliderVel" min="10" max="24" step="1" value="10" aria-label="Probar velocidad">
+          <div class="d-flex justify-content-between small text-suave"><span>Inicio · 10 m/s</span><span>Máxima · 24 m/s</span></div>
+        </div>
+      </div>
+
+      <div class="col-12" data-aos="fade-up">
+        <div class="panel calc">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-5">
+              <h3><i class="bi bi-calculator me-2"></i>Calculadora del sheriff</h3>
+              <p class="sub mb-0">¿Cuánto tardarías en llegar a 1000 puntos? Los puntos salen de <b class="text-white">10 por segundo + 50 por moneda</b>. Mueve el control y descúbrelo.</p>
+            </div>
+            <div class="col-lg-4">
+              <label for="sliderMonedas" class="form-label fw-bold">Monedas por minuto: <span id="valMonedas" class="text-oro">6</span></label>
+              <input type="range" class="form-range" id="sliderMonedas" min="0" max="30" value="6">
+              <label for="sliderTiempo" class="form-label fw-bold mt-2">Tiempo corriendo: <span id="valTiempo" class="text-oro">60</span> s</label>
+              <input type="range" class="form-range" id="sliderTiempo" min="10" max="180" step="5" value="60">
+            </div>
+            <div class="col-lg-3">
+              <div class="resultado text-center">
+                <small class="text-suave d-block">Para 1000 pts necesitas</small>
+                <output id="resMeta">1 min 15 s</output>
+                <hr class="my-2 opacity-25">
+                <small class="text-suave d-block">En el tiempo elegido harías</small>
+                <b class="fs-4 text-white" id="resPuntos">900 pts</b>
+                <div class="estrellas-calc mt-1" id="resEstrellas"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6" data-aos="fade-up">
+        <div class="panel">
+          <h3><i class="bi bi-cpu me-2"></i>Ficha técnica</h3>
+          <p class="sub">Cómo está construido el juego.</p>
+          <table class="table tabla-st">
+            <tbody>
+              <tr><th>Motor</th><td>Unity 6</td></tr>
+              <tr><th>Plataforma</th><td>Web (WebGL) · Unity Play</td></tr>
+              <tr><th>Render</th><td>Built-in o URP</td></tr>
+              <tr><th>Entrada</th><td>Input System clásico y nuevo</td></tr>
+              <tr><th>Interfaz</th><td>Responsiva, base 1920×1080 (16:9, 16:10, 4:3, ultrawide)</td></tr>
+              <tr><th>Tipografías</th><td>Rye y Sniglet (SIL OFL)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="panel">
+          <h3><i class="bi bi-code-slash me-2"></i>Todo hecho por código</h3>
+          <p class="sub">Sin assets externos de audio ni efectos.</p>
+          <div class="row g-3">
+            <div class="col-sm-6"><div class="rasgo"><i class="bi bi-music-note-beamed"></i><h5>Música original</h5><p>Melodía western silbada en el menú y con armónica en la partida, sintetizada al iniciar.</p></div></div>
+            <div class="col-sm-6"><div class="rasgo"><i class="bi bi-cloud-sun"></i><h5>Cielo procedural</h5><p>Degradado, sol poniente, nubes y buitres volando en círculos.</p></div></div>
+            <div class="col-sm-6"><div class="rasgo"><i class="bi bi-stars"></i><h5>Partículas</h5><p>Polvo, chispas, brillo de monedas y confeti.</p></div></div>
+            <div class="col-sm-6"><div class="rasgo"><i class="bi bi-vector-pen"></i><h5>Íconos dibujados</h5><p>Estrella, sombrero, moneda con la “U” y flechas.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 7. JUGAR AHORA ================= -->
+<section class="seccion jugar" id="jugar">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-play-circle"></i>¡A CABALGAR!</span>
+      <h2>Jugar ahora</h2>
+      <p>Gratis, en el navegador y sin instalar nada.</p>
+    </div>
+
+    <div class="consola" data-aos="zoom-in">
+      <div class="pantalla" id="pantalla">
+        <div class="portada" id="portada">
+          <div>
+            <button class="play" id="btnPlay" aria-label="Jugar Sheriff Tornillo"><i class="bi bi-play-fill"></i></button>
+            <h3>Sheriff Tornillo</h3>
+            <p class="text-white fw-bold mb-3">Build WebGL · Unity Play</p>
+            <a class="btn btn-st btn-st-jugar" id="btnJugar" href="#" target="_blank" rel="noopener">JUGAR AHORA <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="consola-pie">
+        <span><i class="bi bi-display me-1"></i>Para la mejor experiencia usa pantalla completa dentro del juego.</span>
+        <a id="linkDirecto" href="#" target="_blank" rel="noopener" class="fw-bold text-oro">Abrir en Unity Play <i class="bi bi-box-arrow-up-right"></i></a>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-4" style="max-width:1000px;margin-inline:auto">
+      <div class="col-lg-4" data-aos="fade-up">
+        <div class="panel">
+          <h3 class="fs-5"><i class="bi bi-shield-check me-2"></i>Tu equipo</h3>
+          <p class="sub">Revisamos tu navegador en vivo:</p>
+          <div id="checks"></div>
+        </div>
+      </div>
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="panel">
+          <h3 class="fs-5"><i class="bi bi-pc-display me-2"></i>Requisitos mínimos</h3>
+          <ul class="list-unstyled text-suave mb-0 d-grid gap-2 mt-3">
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>Computadora con teclado y ratón</li>
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>Chrome, Edge o Firefox actualizado</li>
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>Navegador con WebGL 2.0</li>
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>4 GB de RAM</li>
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>Conexión a internet estable</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="panel">
+          <h3 class="fs-5"><i class="bi bi-rocket-takeoff me-2"></i>Cómo ejecutarlo</h3>
+          <ol class="text-suave mb-0 d-grid gap-2 mt-3 ps-3">
+            <li>Pulsa <b class="text-white">JUGAR AHORA</b>.</li>
+            <li>Espera a que termine la barra de carga.</li>
+            <li>Haz clic sobre el juego para darle el foco del teclado.</li>
+            <li>En el menú principal elige <b class="text-white">Jugar</b> o pulsa <b class="text-white">Enter</b>.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ + EQUIPO ================= -->
+<section class="seccion papel" id="faq">
+  <svg class="borde-roto arriba" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-question-circle"></i>AYUDA</span>
+      <h2>Preguntas frecuentes</h2>
+      <p>Todo lo que necesitas para jugar sin problemas.</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-9" data-aos="fade-up">
+        <div class="accordion accordion-st d-grid gap-2" id="acordeon">
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">¿Tengo que instalar algo para jugar?</button></h3>
+            <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#acordeon"><div class="accordion-body">No. El juego corre directamente en el navegador gracias a Unity WebGL. Solo pulsa <b>JUGAR AHORA</b> y espera a que cargue.</div></div></div>
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">¿Se puede jugar en el celular?</button></h3>
+            <div id="f2" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">El juego está pensado para computadora con teclado. En el celular puedes ver esta página y probar la mini demo “Calienta motores”, que sí funciona con toques en la pantalla.</div></div></div>
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">Las teclas no responden, ¿qué hago?</button></h3>
+            <div id="f3" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">Haz clic una vez dentro del juego para que tenga el foco del teclado. Si sigue sin responder, recarga la página con <b>Ctrl + F5</b>.</div></div></div>
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f4">No se escucha el sonido</button></h3>
+            <div id="f4" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">Los navegadores bloquean el audio hasta que haces clic en la página. Haz clic dentro del juego y revisa el volumen en <b>Opciones</b>.</div></div></div>
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f5">¿Se guarda mi récord?</button></h3>
+            <div id="f5" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">Sí. El récord y las mejores estrellas se guardan en tu navegador. Puedes borrarlos desde <b>Opciones → Borrar récord</b>.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cabecera mt-5 pt-4 mb-4" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-people"></i>EQUIPO</span>
+      <h2>Quiénes lo hicieron</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-5 col-lg-4" data-aos="fade-up"><div class="miembro"><div class="avatar">JH</div><h4>Juan Miguel Huanca Uruña</h4><p>Desarrollo</p></div></div>
+      <div class="col-md-5 col-lg-4" data-aos="fade-up" data-aos-delay="100"><div class="miembro"><div class="avatar">AC</div><h4>Axel Marcelo Canqui Ticona</h4><p>Desarrollo</p></div></div>
+    </div>
+    <p class="text-center mt-4 mb-0" style="color:#6b4a35"><i class="bi bi-mortarboard-fill me-1"></i>Game Development · Universidad del Valle (Univalle) · 2026</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <a class="navbar-brand text-decoration-none mb-3" href="#inicio">
+          <svg class="logo" viewBox="0 0 24 24" width="42" height="42"><use href="#estrella"/></svg>
+          <span><span class="t1">Sheriff Tornillo</span><span class="t2">CARRERA EN EL DESIERTO</span></span>
+        </a>
+        <p class="text-suave small mb-0">Endless runner 3D western desarrollado en Unity 6 para la asignatura Game Development de la Universidad del Valle (Univalle).</p>
+      </div>
+      <div class="col-6 col-lg-3">
+        <h5>Explorar</h5>
+        <ul class="list-unstyled small d-grid gap-1 mb-0"><li><a href="#historia">Historia</a></li><li><a href="#personaje">Personaje</a></li><li><a href="#mecanicas">Mecánicas</a></li><li><a href="#datos">Datos</a></li><li><a href="#faq">FAQ</a></li></ul>
+      </div>
+      <div class="col-6 col-lg-4">
+        <h5>Jugar</h5>
+        <p class="small text-suave">Disponible gratis en Unity Play.</p>
+        <a class="btn btn-st btn-st-jugar btn-st-sm" href="#jugar"><i class="bi bi-play-fill"></i> Jugar ahora</a>
+      </div>
+    </div>
+    <div class="legal d-flex flex-wrap justify-content-between gap-2">
+      <span>© 2026 Sheriff Tornillo · Proyecto académico</span>
+      <span>Hecho con Bootstrap 5 · Fuentes Rye y Sniglet (SIL OFL)</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Botón volver arriba -->
+<a href="#inicio" id="arriba" aria-label="Volver arriba"><i class="bi bi-arrow-up"></i></a>
+
+<!-- Modal de la captura -->
+<div class="modal fade" id="modalCaptura" tabindex="-1" aria-labelledby="modalCapturaTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-rye text-oro" id="modalCapturaTitulo">Menú principal del juego</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body p-2"><img src="img/captura.jpg" class="img-fluid rounded-3" alt="Captura del menú principal de Sheriff Tornillo" loading="lazy"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Aviso (toast) -->
+<div class="toast-container position-fixed bottom-0 start-0 p-3" style="z-index:1090">
+  <div id="aviso" class="toast" role="status" aria-live="polite" aria-atomic="true">
+    <div class="toast-header"><i class="bi bi-trophy-fill me-2"></i><strong class="me-auto font-rye">¡Bien hecho, sheriff!</strong><button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button></div>
+    <div class="toast-body" id="avisoTexto">Recuperaste el oro.</div>
+  </div>
+</div>
+
+<!-- Librerías -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+<!-- Código propio -->
+<script src="js/main.js"></script>
+</body>
+</html>
