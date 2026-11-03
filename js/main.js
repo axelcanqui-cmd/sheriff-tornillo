@@ -3,13 +3,15 @@
    ========================================================= */
 
 /* ⚙️ CONFIGURACIÓN DEL JUEGO */
+
+/* CONFIGURACIÓN DEL JUEGO */
 const CONFIG = {
-  // Enlace público del juego en Unity Play
   urlUnity: "https://play.unity.com/api/v1/games/game/1041454a-2627-456c-bd36-a734abfc705c/build/latest/frame",
-  // Opcional: el "src" del código de inserción (Unity Play > Share > Embed).
-  // Si lo dejas vacío, el botón abre el juego en una pestaña nueva.
-  urlEmbed: ""
+
+  // Enlace para insertar el juego dentro de la página
+  urlEmbed: "https://play.unity.com/api/v1/games/game/1041454a-2627-456c-bd36-a734abfc705c/build/latest/frame"
 };
+
 
 const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = (s, c = document) => c.querySelector(s);
