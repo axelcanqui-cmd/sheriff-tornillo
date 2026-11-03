@@ -347,3 +347,62 @@ footer .legal{border-top:1px solid rgba(251,238,221,.08);margin-top:36px;padding
 @media (max-width:575.98px){
   .demo-record{width:100%;text-align:center;order:-1}
 }
+
+/* =========================================================
+   SHERIFF TORNILLO - REPRODUCTOR UNITY WEBGL
+   ========================================================= */
+
+/* Contenedor del videojuego */
+
+#pantalla {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: 350px;
+    overflow: hidden;
+    background: #140a12;
+    border-radius: 16px;
+}
+
+/* Iframe del videojuego */
+
+#pantalla iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #000;
+}
+
+/* Portada antes de iniciar el juego */
+
+#portada {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+/* Adaptación para pantallas pequeñas */
+
+@media (max-width: 768px) {
+
+    #pantalla {
+        aspect-ratio: 16 / 9;
+        min-height: 240px;
+    }
+
+    .consola {
+        padding: 8px;
+    }
+
+    .consola-pie {
+        font-size: 0.78rem;
+    }
+
+}
+
