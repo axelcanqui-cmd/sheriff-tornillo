@@ -6,10 +6,7 @@
 
 /* CONFIGURACIÓN DEL JUEGO */
 const CONFIG = {
-  urlUnity: "https://play.unity.com/api/v1/games/game/1041454a-2627-456c-bd36-a734abfc705c/build/latest/frame",
-
-  // Enlace para insertar el juego dentro de la página
-  urlEmbed: "https://play.unity.com/api/v1/games/game/1041454a-2627-456c-bd36-a734abfc705c/build/latest/frame"
+    urlJuego: "./juego/index.html"
 };
 
 
