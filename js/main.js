@@ -6,7 +6,7 @@
 
 /* CONFIGURACIÓN DEL JUEGO */
 const CONFIG = {
-    urlJuego: "./juego/index.html"
+    urlJuego: "juego/index.html"
 };
 
 
