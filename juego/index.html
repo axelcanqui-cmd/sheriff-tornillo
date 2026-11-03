@@ -3,9 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | RobotVaquero</title>
+    <title>Sheriff Tornillo | Videojuego</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+  
+      <style>
+        html, body { width:100%; height:100%; margin:0; padding:0; overflow:hidden; background:#000; }
+        #unity-container.unity-desktop { position:relative; left:auto; top:auto; transform:none; width:100%; height:100%; }
+        #unity-fullscreen-container { width:100% !important; height:100% !important; }
+        #unity-canvas { width:100% !important; height:100% !important; }
+        #unity-footer { display:none !important; }
+        #unity-warning { z-index:20; }
+      </style>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -115,8 +124,8 @@
 
       } else {
         // Desktop style: Render the game canvas container in a window that can be maximized to fullscreen:
-        fullscreenContainer.style.width = "960px";
-        fullscreenContainer.style.height = "600px";
+        fullscreenContainer.style.width = "100%";
+        fullscreenContainer.style.height = "100%";
       }
 
 
