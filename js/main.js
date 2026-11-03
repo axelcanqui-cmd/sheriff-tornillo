@@ -5,7 +5,7 @@
 /* ⚙️ CONFIGURACIÓN DEL JUEGO */
 const CONFIG = {
   // Enlace público del juego en Unity Play
-  urlUnity: "https://play.unity.com/en/games/1041454a-2627-456c-bd36-a734abfc705c/sheriff-tornillo",
+  urlUnity: "https://play.unity.com/en/games/3797a0b4-e17b-46d5-ab0b-ebe0cbc3c7af/sheriff-tornillo",
   // Opcional: el "src" del código de inserción (Unity Play > Share > Embed).
   // Si lo dejas vacío, el botón abre el juego en una pestaña nueva.
   urlEmbed: ""
