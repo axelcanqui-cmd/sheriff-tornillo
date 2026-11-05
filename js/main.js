@@ -2,13 +2,12 @@
    SHERIFF TORNILLO · Portal oficial · main.js
    ========================================================= */
 
-/* ⚙️ CONFIGURACIÓN DEL JUEGO */
-
-/* CONFIGURACIÓN DEL JUEGO */
+/* CONFIGURACIÓN DEL JUEGO
+   Ruta RELATIVA (sin "/" inicial) para que funcione en GitHub Pages,
+   donde el sitio vive en usuario.github.io/NOMBRE-REPO/ */
 const CONFIG = {
-    urlJuego: "/juego/index.html"
+  urlJuego: "juego/index.html"
 };
-
 
 const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = (s, c = document) => c.querySelector(s);
@@ -32,14 +31,21 @@ if (window.VanillaTilt && !reducido && matchMedia("(pointer:fine)").matches) {
 /* ---------- Enlaces del juego ---------- */
 (() => {
   const jugar = $("#btnJugar"), directo = $("#linkDirecto"), play = $("#btnPlay");
-  jugar.href = directo.href = CONFIG.urlUnity;
+  if (!jugar || !directo || !play) return;
+  directo.href = CONFIG.urlJuego;
+  let cargado = false;
   const cargar = (e) => {
-    if (!CONFIG.urlEmbed) { if (e.currentTarget === play) window.open(CONFIG.urlUnity, "_blank", "noopener"); return; }
     e.preventDefault();
+    if (cargado) return;
+    cargado = true;
     const f = document.createElement("iframe");
-    f.src = CONFIG.urlEmbed; f.title = "Sheriff Tornillo – juego";
-    f.allow = "autoplay; fullscreen; gamepad"; f.allowFullscreen = true;
-    $("#portada").replaceWith(f);
+    f.src = CONFIG.urlJuego;
+    f.title = "Sheriff Tornillo – juego";
+    f.allow = "autoplay; fullscreen; gamepad";
+    f.allowFullscreen = true;
+    f.addEventListener("load", () => f.focus());
+    const portada = $("#portada");
+    if (portada) portada.replaceWith(f); else $("#pantalla").appendChild(f);
   };
   play.addEventListener("click", cargar);
   jugar.addEventListener("click", cargar);
