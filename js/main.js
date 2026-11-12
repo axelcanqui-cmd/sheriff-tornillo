@@ -6,7 +6,8 @@
    Ruta RELATIVA (sin "/" inicial) para que funcione en GitHub Pages,
    donde el sitio vive en usuario.github.io/NOMBRE-REPO/ */
 const CONFIG = {
-  urlJuego: "juego/index.html"
+  urlJuego: "juego/index.html",
+  urlLaberinto: "laberinto/index.html"
 };
 
 const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -28,27 +29,48 @@ if (window.VanillaTilt && !reducido && matchMedia("(pointer:fine)").matches) {
   VanillaTilt.init($$("[data-tilt]"));
 }
 
-/* ---------- Enlaces del juego ---------- */
+/* ---------- Juegos (pestañas): cada juego se carga en un iframe al pulsar Jugar ---------- */
 (() => {
-  const jugar = $("#btnJugar"), directo = $("#linkDirecto"), play = $("#btnPlay");
-  if (!jugar || !directo || !play) return;
-  directo.href = CONFIG.urlJuego;
-  let cargado = false;
-  const cargar = (e) => {
-    e.preventDefault();
-    if (cargado) return;
-    cargado = true;
-    const f = document.createElement("iframe");
-    f.src = CONFIG.urlJuego;
-    f.title = "Sheriff Tornillo – juego";
-    f.allow = "autoplay; fullscreen; gamepad";
-    f.allowFullscreen = true;
-    f.addEventListener("load", () => f.focus());
-    const portada = $("#portada");
-    if (portada) portada.replaceWith(f); else $("#pantalla").appendChild(f);
-  };
-  play.addEventListener("click", cargar);
-  jugar.addEventListener("click", cargar);
+  const juegos = [
+    { id: "carrera",   url: CONFIG.urlJuego,     titulo: "Sheriff Tornillo – Carrera en el Desierto", panel: "#juegoCarrera",   pantalla: "#pantalla",    portada: "#portada",    play: "#btnPlay",    jugar: "#btnJugar",    directo: "#linkDirecto" },
+    { id: "laberinto", url: CONFIG.urlLaberinto, titulo: "Sheriff Tornillo – El Laberinto del Oro",   panel: "#juegoLaberinto", pantalla: "#pantallaLab", portada: "#portadaLab", play: "#btnPlayLab", jugar: "#btnJugarLab", directo: "#linkDirectoLab" }
+  ];
+
+  juegos.forEach(g => {
+    const pantalla = $(g.pantalla), directo = $(g.directo);
+    if (!pantalla || !$(g.portada)) return;
+    directo.href = g.url;
+    const portadaHTML = $(g.portada).outerHTML;   // copia para poder volver a la portada
+
+    const montar = () => {
+      const jugar = $(g.jugar), play = $(g.play);
+      if (!jugar || !play) return;
+      const cargar = (e) => {
+        e.preventDefault();
+        const portada = $(g.portada);
+        if (!portada) return;                      // ya está cargado
+        const f = document.createElement("iframe");
+        f.src = g.url;
+        f.title = g.titulo;
+        f.allow = "autoplay; fullscreen; gamepad";
+        f.allowFullscreen = true;
+        f.addEventListener("load", () => f.focus());
+        portada.replaceWith(f);
+      };
+      play.addEventListener("click", cargar);
+      jugar.addEventListener("click", cargar);
+    };
+    montar();
+
+    // Al cambiar de pestaña se descarga el juego para no gastar memoria ni dejar sonando la música
+    const boton = $(`[data-bs-target="${g.panel}"]`);
+    if (boton) boton.addEventListener("hidden.bs.tab", () => {
+      const f = $("iframe", pantalla);
+      if (!f) return;
+      f.replaceWith(Object.assign(document.createElement("div"), { innerHTML: portadaHTML }).firstElementChild);
+      montar();
+    });
+  });
 })();
 
 /* ---------- Scroll: navbar, barra de progreso, botón arriba, parallax ---------- */

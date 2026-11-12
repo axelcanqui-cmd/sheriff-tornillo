@@ -477,68 +477,71 @@
     <div class="cabecera" data-aos="fade-up">
       <span class="kicker"><i class="bi bi-play-circle"></i>¡A CABALGAR!</span>
       <h2>Jugar ahora</h2>
-      <p>Gratis, en el navegador y sin instalar nada.</p>
+      <p>Dos juegos gratis, en el navegador y sin instalar nada. Elige cuál probar.</p>
     </div>
 
    
-<div class="consola" data-aos="zoom-in">
+<!-- Selector de juego -->
+    <ul class="nav nav-pills nav-pills-st justify-content-center mb-4" id="tabsJuegos" role="tablist" data-aos="fade-up">
+      <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-carrera" data-bs-toggle="pill" data-bs-target="#juegoCarrera" type="button" role="tab" aria-controls="juegoCarrera" aria-selected="true"><i class="bi bi-speedometer2 me-1"></i>Carrera en el Desierto</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" id="tab-laberinto" data-bs-toggle="pill" data-bs-target="#juegoLaberinto" type="button" role="tab" aria-controls="juegoLaberinto" aria-selected="false"><i class="bi bi-grid-3x3-gap-fill me-1"></i>El Laberinto del Oro</button></li>
+    </ul>
 
-    <div class="pantalla" id="pantalla">
+    <div class="tab-content">
 
-        <div class="portada" id="portada">
-
-            <div>
-
-                <button class="play"
-                        id="btnPlay"
-                        aria-label="Jugar Sheriff Tornillo">
-
-                    <i class="bi bi-play-fill"></i>
-
-                </button>
-
-                <h3>Sheriff Tornillo</h3>
-
-                <p class="text-white fw-bold mb-3">
-                    Videojuego 3D · Unity 6 WebGL
-                </p>
-
-                <a class="btn btn-st btn-st-jugar"
-                   id="btnJugar"
-                   href="#pantalla">
-
-                    JUGAR AHORA
-                    <i class="bi bi-play-fill ms-1"></i>
-
-                </a>
-
+      <!-- ===== JUEGO 1 · CARRERA EN EL DESIERTO ===== -->
+      <div class="tab-pane fade show active" id="juegoCarrera" role="tabpanel" aria-labelledby="tab-carrera" tabindex="0">
+        <div class="consola" data-aos="zoom-in">
+          <div class="pantalla" id="pantalla">
+            <div class="portada" id="portada">
+              <div>
+                <button class="play" id="btnPlay" aria-label="Jugar Sheriff Tornillo: Carrera en el Desierto"><i class="bi bi-play-fill"></i></button>
+                <h3>Carrera en el Desierto</h3>
+                <p class="text-white fw-bold mb-3">Endless runner 3D · Unity 6 WebGL</p>
+                <a class="btn btn-st btn-st-jugar" id="btnJugar" href="#pantalla">JUGAR AHORA <i class="bi bi-play-fill ms-1"></i></a>
+              </div>
             </div>
-
+          </div>
+          <div class="consola-pie">
+            <span><i class="bi bi-display me-1"></i>Haz clic dentro del juego para activar los controles. <b>↑</b> saltar · <b>↓</b> deslizar</span>
+            <a id="linkDirecto" href="./juego/index.html" target="_blank" rel="noopener" class="fw-bold text-oro">Abrir juego en pantalla completa <i class="bi bi-fullscreen"></i></a>
+          </div>
         </div>
+      </div>
+
+      <!-- ===== JUEGO 2 · EL LABERINTO DEL ORO ===== -->
+      <div class="tab-pane fade" id="juegoLaberinto" role="tabpanel" aria-labelledby="tab-laberinto" tabindex="0">
+        <div class="consola">
+          <div class="pantalla" id="pantallaLab">
+            <div class="portada portada-lab" id="portadaLab">
+              <div>
+                <button class="play" id="btnPlayLab" aria-label="Jugar Sheriff Tornillo: El Laberinto del Oro"><i class="bi bi-play-fill"></i></button>
+                <h3>El Laberinto del Oro</h3>
+                <p class="text-white fw-bold mb-3">Laberinto 3D · Unity 6 WebGL</p>
+                <a class="btn btn-st btn-st-jugar" id="btnJugarLab" href="#pantallaLab">JUGAR AHORA <i class="bi bi-play-fill ms-1"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="consola-pie">
+            <span><i class="bi bi-display me-1"></i>Haz clic dentro del juego. <b>Flechas</b> mover · <b>R</b> reiniciar · <b>V</b> cambiar vista</span>
+            <a id="linkDirectoLab" href="./laberinto/index.html" target="_blank" rel="noopener" class="fw-bold text-oro">Abrir juego en pantalla completa <i class="bi bi-fullscreen"></i></a>
+          </div>
+        </div>
+        <div class="row g-3 mt-3" style="max-width:1000px;margin-inline:auto">
+          <div class="col-md-6"><div class="panel"><h3 class="fs-5"><i class="bi bi-bullseye me-2"></i>Tu misión</h3><p class="sub mb-0">Recoge las <b class="text-white">36 monedas de oro</b> (10 puntos cada una) para abrir la puerta de salida y escapa por arriba. Cuidado con los <b class="text-white">Hermanos Óxido</b>: si te ven a 8 unidades o menos, te persiguen. Si te tocan, pierdes.</p></div></div>
+          <div class="col-md-6"><div class="panel"><h3 class="fs-5"><i class="bi bi-keyboard me-2"></i>Controles</h3>
+            <div class="leyenda-teclas mt-2">
+              <div><span class="tecla">↑</span><span class="tecla">↓</span><span class="tecla">←</span><span class="tecla">→</span> <span><b>Mover</b></span></div>
+              <div><span class="tecla">R</span> <span><b>Reiniciar</b></span></div>
+              <div><span class="tecla">V</span> <span><b>Vista</b> inclinada / cenital</span></div>
+              <div><span class="tecla">M</span> <span><b>Música</b> sí / no</span></div>
+            </div>
+          </div></div>
+        </div>
+      </div>
 
     </div>
 
-    <div class="consola-pie">
-
-        <span>
-            <i class="bi bi-display me-1"></i>
-            Haz clic dentro del juego para activar los controles.
-        </span>
-
-        <a id="linkDirecto"
-           href="./juego/index.html"
-           target="_blank"
-           rel="noopener"
-           class="fw-bold text-oro">
-
-            Abrir juego en pantalla completa
-            <i class="bi bi-fullscreen"></i>
-
-        </a>
-
-    </div>
-
-</div>
 
 
     <div class="row g-4 mt-4" style="max-width:1000px;margin-inline:auto">
@@ -565,7 +568,7 @@
         <div class="panel">
           <h3 class="fs-5"><i class="bi bi-rocket-takeoff me-2"></i>Cómo ejecutarlo</h3>
           <ol class="text-suave mb-0 d-grid gap-2 mt-3 ps-3">
-            <li>Pulsa <b class="text-white">JUGAR AHORA</b>.</li>
+            <li>Elige el juego en la pestaña y pulsa <b class="text-white">JUGAR AHORA</b>.</li>
             <li>Espera a que termine la barra de carga.</li>
             <li>Haz clic sobre el juego para darle el foco del teclado.</li>
             <li>En el menú principal elige <b class="text-white">Jugar</b> o pulsa <b class="text-white">Enter</b>.</li>
