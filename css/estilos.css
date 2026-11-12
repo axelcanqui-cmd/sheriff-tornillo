@@ -354,7 +354,8 @@ footer .legal{border-top:1px solid rgba(251,238,221,.08);margin-top:36px;padding
 
 /* Contenedor del videojuego */
 
-#pantalla {
+#pantalla,
+#pantallaLab {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -366,7 +367,8 @@ footer .legal{border-top:1px solid rgba(251,238,221,.08);margin-top:36px;padding
 
 /* Iframe del videojuego */
 
-#pantalla iframe {
+#pantalla iframe,
+#pantallaLab iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -379,7 +381,8 @@ footer .legal{border-top:1px solid rgba(251,238,221,.08);margin-top:36px;padding
 
 /* Portada antes de iniciar el juego */
 
-#portada {
+#portada,
+#portadaLab {
     position: absolute;
     inset: 0;
     display: grid;
@@ -391,7 +394,8 @@ footer .legal{border-top:1px solid rgba(251,238,221,.08);margin-top:36px;padding
 
 @media (max-width: 768px) {
 
-    #pantalla {
+    #pantalla,
+    #pantallaLab {
         aspect-ratio: 16 / 9;
         min-height: 240px;
     }
@@ -406,3 +410,11 @@ footer .legal{border-top:1px solid rgba(251,238,221,.08);margin-top:36px;padding
 
 }
 
+
+/* Portada del Laberinto del Oro (sin captura: degradado con trama de laberinto) */
+.portada.portada-lab{
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88'%3E%3Cpath d='M0 0h88v88H0z' fill='none'/%3E%3Cpath d='M0 22h44v22h22M22 0v22M66 0v44h22M0 66h44M44 66v22M66 66h22M22 44v22' stroke='%23f9c33b' stroke-opacity='.22' stroke-width='6' stroke-linecap='square' fill='none'/%3E%3C/svg%3E"),
+      radial-gradient(circle at 50% 40%, #6b2a35, #2b1323 70%);
+    background-size: 88px 88px, cover;
+}
