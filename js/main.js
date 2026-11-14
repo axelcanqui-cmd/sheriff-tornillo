@@ -50,7 +50,7 @@ if (window.VanillaTilt && !reducido && matchMedia("(pointer:fine)").matches) {
         const portada = $(g.portada);
         if (!portada) return;                      // ya está cargado
         const f = document.createElement("iframe");
-        f.src = g.url;
+        f.src = g.url + "?v=2";   // v=2 evita que el navegador use una copia vieja
         f.title = g.titulo;
         f.allow = "autoplay; fullscreen; gamepad";
         f.allowFullscreen = true;
