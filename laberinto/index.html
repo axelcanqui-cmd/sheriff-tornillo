@@ -129,16 +129,34 @@
       }
 
 
+      // El .wasm (45 MB) está partido en trozos para poder subirlo a GitHub por la web (límite 25 MB).
+      // Aquí se descargan, se unen y se le pasan a Unity como un solo archivo.
+      var PARTES_WASM = 4;
+      async function cargarWasm(barra) {
+        var trozos = [];
+        for (var i = 0; i < PARTES_WASM; i++) {
+          var r = await fetch(buildUrl + "/laberinto.wasm.part" + i);
+          if (!r.ok) throw new Error("No se encontró " + buildUrl + "/laberinto.wasm.part" + i + " (error " + r.status + "). Sube la carpeta laberinto/Build completa.");
+          trozos.push(await r.arrayBuffer());
+          barra.style.width = (100 * (i + 1) / PARTES_WASM * 0.5) + "%";
+        }
+        return URL.createObjectURL(new Blob(trozos, { type: "application/wasm" }));
+      }
+
       var script = document.createElement("script");
       script.src = loaderUrl;
-      script.onload = () => {
+      script.onload = async () => {
         const loadingContainer = document.querySelector("#unity-loading-container");
         const progressBarFull = document.querySelector("#unity-progress-bar-full");
+        loadingContainer.style.display = "block";
+        try {
+          config.codeUrl = await cargarWasm(progressBarFull);
+        } catch (e) { alert(e.message); return; }
 
         createUnityInstance(canvas, config, (progress) => {
           if (progress < 1) {
             loadingContainer.style.display = "block";
-            progressBarFull.style.width = 100 * progress + "%";
+            progressBarFull.style.width = (50 + 50 * progress) + "%";
           } else {
             loadingContainer.style.display = "none";
           }
